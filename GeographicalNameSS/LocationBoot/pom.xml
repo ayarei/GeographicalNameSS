@@ -67,6 +67,12 @@
 			<artifactId>zkclient</artifactId>
 			<version>0.11</version>
 		</dependency>
+		<!-- CXF框架webservice支持 -->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+			<version>3.2.5</version>
+		</dependency>
 		<!-- 序列化支持 -->
 		<dependency>
 			<groupId>com.alibaba</groupId>

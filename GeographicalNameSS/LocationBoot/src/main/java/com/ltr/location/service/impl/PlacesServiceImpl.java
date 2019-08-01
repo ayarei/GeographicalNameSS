@@ -2,13 +2,17 @@ package com.ltr.location.service.impl;
 
 import java.util.List;
 
+import javax.jws.WebService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.PropertyFilter;
+import com.ltr.location.config.NamespaceConfig;
 import com.ltr.location.mapper.PlacesRepository;
 import com.ltr.location.service.PlacesService;
 
@@ -17,6 +21,13 @@ import com.ltr.location.service.PlacesService;
  * 
  *
  */
+@WebService(
+		serviceName = "locationServices",
+		targetNamespace = NamespaceConfig.webServiceNamespace,
+		name = NamespaceConfig.webServiceName,
+		portName = "locationPort",
+		endpointInterface = "com.ltr.location.service.PlacesService"
+		)
 @Service
 @com.alibaba.dubbo.config.annotation.Service
 public class PlacesServiceImpl implements PlacesService {
