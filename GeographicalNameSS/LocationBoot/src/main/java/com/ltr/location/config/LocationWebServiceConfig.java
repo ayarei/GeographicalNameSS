@@ -13,7 +13,6 @@ import com.ltr.location.service.impl.PlacesServiceImpl;
 
 @Configuration
 public class LocationWebServiceConfig {
-	
 	@Autowired
 	private Bus bus;
 

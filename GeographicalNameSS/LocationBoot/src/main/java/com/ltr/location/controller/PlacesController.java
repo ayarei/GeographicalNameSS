@@ -1,15 +1,16 @@
 package com.ltr.location.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ltr.location.service.PlacesService;
 
-@RestController
+@Controller
 public class PlacesController {
 
 	@Autowired
@@ -24,6 +25,7 @@ public class PlacesController {
 	 * @return
 	 */
 	@RequestMapping(value = "/province/{name}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+	@ResponseBody
 	public String findCityByProvince(@PathVariable("name") String provinceName) {
 		return placesService.findByProvince(provinceName);
 	}
@@ -38,6 +40,7 @@ public class PlacesController {
 	 * @return
 	 */
 	@RequestMapping(value = "/province/{provinceName}/{cityName}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+	@ResponseBody
 	public String findCountyByProAndCity(@PathVariable("provinceName") String provinceName,
 			@PathVariable("cityName") String cityName) {
 		return placesService.findByProvinceAndCity(provinceName, cityName);
@@ -51,13 +54,14 @@ public class PlacesController {
 	 * @return
 	 */
 	@RequestMapping(value = "/nearby", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+	@ResponseBody
 	public String findNearByCounty(@RequestParam(value = "lng", required = true) Double longitude,
 			@RequestParam(value = "lat", required = true) Double latitude) {
 		return placesService.findByLngAndLat(longitude, latitude);
 	}
 
-	@RequestMapping(value = "/hello", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
-	public String hello() {
-		return placesService.hello();
+	@RequestMapping(value = "/",produces = "application/html;charset=utf-8")
+	public String index() {
+		return "index.html";
 	}
 }

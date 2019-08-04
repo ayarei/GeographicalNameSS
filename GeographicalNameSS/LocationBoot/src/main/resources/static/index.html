@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>接口说明</title>
+</head>
+<body>
+	<h4>Author By LTR</h4>
+	<h3>Rest接口</h3>
+	<table>
+		<tr>
+			<td>查询省份下所有城市</td>
+		</tr>
+		<tr>
+			<td>(GET)/province/{provinceName}</td>
+			<td>允许模糊查询</td>
+		</tr>
+		<tr height="5" />
+		<tr>
+			<td>查询省份\城市下所有的区县</td>
+		</tr>
+		<tr>
+			<td>(GET)/province/{provinceName}/{cityName}</td>
+			<td>不允许模糊查询</td>
+		</tr>
+		<tr height="5" />
+		<tr>
+			<td>根据经纬度查询最近匹配区县</td>
+		</tr>
+		<tr>
+			<td>(GET)/nearby?lng={longitude}&lat={latitude}</td>
+		</tr>
+		<tr height="15" />
+	</table>
+	<h3>RPC接口</h3>
+	<table>
+		<tr>
+			<td>通过ZooKeeper、Dubbo连接</td>
+		</tr>
+		<tr height="15" />
+	</table>
+	<h3>WebService接口</h3>
+	<table>
+		<tr>
+			<td>/services</td>
+		</tr>
+	</table>
+</body>
+</html>
