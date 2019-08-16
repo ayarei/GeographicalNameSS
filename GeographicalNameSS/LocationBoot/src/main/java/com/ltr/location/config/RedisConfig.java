@@ -21,6 +21,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * 
+ * 用于注解开发
+ *
+ */
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
@@ -44,9 +49,9 @@ public class RedisConfig extends CachingConfigurerSupport {
 
 	@Bean
 	public CacheManager cacheManager(RedisConnectionFactory redisConnectFactory) {
-		// 设置缓存过期时间为6小时
+		// 设置缓存过期时间为12小时
 		RedisCacheConfiguration redisCacheCfg = RedisCacheConfiguration.defaultCacheConfig()
-				.entryTtl(Duration.ofHours(6));
+				.entryTtl(Duration.ofHours(12));
 		return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectFactory))
 				.cacheDefaults(redisCacheCfg).build();
 	}

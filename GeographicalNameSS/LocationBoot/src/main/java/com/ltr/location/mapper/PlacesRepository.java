@@ -1,6 +1,5 @@
 package com.ltr.location.mapper;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,12 +10,12 @@ import com.ltr.location.queryresult.CityResult;
 import com.ltr.location.queryresult.CountyResult;
 
 /**
- * 基于JPA生成基本的CRUD
+ * JPA生成基本的CRUD
  * 
- * @author 91456
+ * @author 刘添瑞
  *
  */
-public interface PlacesRepository extends JpaRepository<Places, Integer>,Serializable {
+public interface PlacesRepository extends JpaRepository<Places, Integer> {
 
 	/**
 	 * 根据省名查找地市名
@@ -37,10 +36,10 @@ public interface PlacesRepository extends JpaRepository<Places, Integer>,Seriali
 	List<CountyResult> findByProvinceAndCity(String provinceName, String cityName);
 
 	/**
-	 * 根据经纬度查找最近的区县 查找范围自定义
+	 * 根据经纬度查找最近的区县 
 	 * 
-	 * @param longitude   经度
-	 * @param latitude    纬度
+	 * @param longitude 经度
+	 * @param latitude  纬度
 	 * @return
 	 */
 	@Query(value = "select county,longitude,latitude from Places where longitude < ?1 + 1 and longitude > ?1 - 1 and latitude < ?2 + 1 and latitude > ?2 - 1 "

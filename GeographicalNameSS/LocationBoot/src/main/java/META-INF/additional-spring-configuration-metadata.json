@@ -1,5 +1,17 @@
-{"properties": [{
-  "name": "rpc.service.version",
-  "type": "java.lang.String",
-  "description": "A description for 'rpc.service.version'"
-}]}
+{"properties": [
+  {
+    "name": "rpc.service.version",
+    "type": "java.lang.String",
+    "description": "A description for 'rpc.service.version'"
+  },
+  {
+    "name": "mail.fromMail.addr",
+    "type": "java.lang.String",
+    "description": "A description for 'mail.fromMail.addr'"
+  },
+  {
+    "name": "mail.fromMail.addr",
+    "type": "java.lang.String",
+    "description": "A description for 'mail.fromMail.addr'"
+  }
+]}

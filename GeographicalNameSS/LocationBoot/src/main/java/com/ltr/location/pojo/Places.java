@@ -1,6 +1,5 @@
 package com.ltr.location.pojo;
 
-import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "places")
-public class Places implements Serializable{
+public class Places {
 
 	@Id
 	@Column(name = "id")

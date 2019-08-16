@@ -1,12 +1,11 @@
 package com.ltr.location.service.impl;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.jws.WebService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -17,30 +16,25 @@ import com.ltr.location.mapper.PlacesRepository;
 import com.ltr.location.service.PlacesService;
 
 /**
+ * 
  * 接口增加Redis缓存
  * 
- *
  */
-@WebService(
-		serviceName = "locationServices",
-		targetNamespace = NamespaceConfig.webServiceNamespace,
-		name = NamespaceConfig.webServiceName,
-		portName = "locationPort",
-		endpointInterface = "com.ltr.location.service.PlacesService"
-		)
+@WebService(serviceName = "locationServices", // 服务名称
+		targetNamespace = NamespaceConfig.webServiceNamespace, // wsdl命名空间
+		name = NamespaceConfig.webServiceName, // 客户端生成代码时的接口名称
+		portName = "locationPort", endpointInterface = "com.ltr.location.service.PlacesService" // 指定发布webservcie的接口类
+)
 @Service
 @com.alibaba.dubbo.config.annotation.Service
 public class PlacesServiceImpl implements PlacesService {
-
 	@Autowired
 	private PlacesRepository placesRepository;
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
-	/*
-	 * redis存储非List对象时需要
-	 */
-	// @Autowired
-	// private RedisTemplate redisTemplate;
+
+	private static final int Redis_Cache_Time_Out_Hours = 12; // Redis缓存超时时间，12小时
+	private static final int Redis_Cache_Min_For_NULL = 5;    // 缓存空数据的时限为5分钟
 
 	/**
 	 * 给省名返回属于本省的所有地市名
@@ -56,9 +50,7 @@ public class PlacesServiceImpl implements PlacesService {
 			return ret;
 		}
 		ret = getJson(placesRepository.findByProvinceLike(provinceName));
-		if (!ret.equals("[]")) {
-			redisSet(provinceName, ret);
-		}
+		redisSet(provinceName, ret);
 		return ret;
 	}
 
@@ -75,9 +67,7 @@ public class PlacesServiceImpl implements PlacesService {
 			return ret;
 		}
 		ret = getJson(placesRepository.findByProvinceAndCity(provinceName, cityName));
-		if (!ret.equals("[]")) {
-			redisSet(key, ret);
-		}
+		redisSet(key, ret);
 		return ret;
 	}
 
@@ -94,9 +84,7 @@ public class PlacesServiceImpl implements PlacesService {
 			return ret;
 		}
 		ret = getJson(placesRepository.findByLngAndLat(longitude, latitude));
-		if (!ret.equals("[]")) {
-			redisSet(key, ret);
-		}
+		redisSet(key, ret);
 		return ret;
 	}
 
@@ -109,9 +97,7 @@ public class PlacesServiceImpl implements PlacesService {
 	}
 
 	/**
-	 * 将List转为json字符串以提供RPC接口调用
-	 * 
-	 * （Dubbo无法序列化List对象）
+	 * 序列化对象为json字符串
 	 * 
 	 * @param <T>
 	 * @param object
@@ -120,6 +106,7 @@ public class PlacesServiceImpl implements PlacesService {
 	private <T> String getJson(List<T> object) {
 		PropertyFilter profilter = new PropertyFilter() {
 
+			// 排除Json字符串中多余字段
 			@Override
 			public boolean apply(Object object, String name, Object value) {
 				if (name.equalsIgnoreCase("targetClass") || name.equalsIgnoreCase("target")) {
@@ -140,7 +127,17 @@ public class PlacesServiceImpl implements PlacesService {
 	 * @param obj
 	 */
 	private void redisSet(String key, String obj) {
-		stringRedisTemplate.opsForValue().set(key, obj);
+		if (!obj.equals("[]")) {
+			// 防止缓存雪崩，在原基础上为每个缓存数据添加随机的缓存时间
+			int Random_Cache_Hours = (int) (Math.random() * 10);
+			stringRedisTemplate.opsForValue().set(key, obj, Redis_Cache_Time_Out_Hours + Random_Cache_Hours,
+					TimeUnit.HOURS);
+		} 
+		// 防止缓存穿透攻击，对无法找到的数据仍然缓存五分钟
+		else if (obj.equals("[]")) {
+			stringRedisTemplate.opsForValue().set(key, obj, Redis_Cache_Min_For_NULL, TimeUnit.MINUTES);
+		}
+
 	}
 
 	private String redisGet(String key) {

@@ -15,11 +15,17 @@ import com.ltr.location.service.impl.PlacesServiceImpl;
 public class LocationWebServiceConfig {
 	@Autowired
 	private Bus bus;
+	
+	/**
+	 * 
+	 * 默认WebService访问地址为/services
+	 * 
+	 */
 
 	@Bean
 	public Endpoint endpoint() {
 		EndpointImpl endpoint = new EndpointImpl(bus, new PlacesServiceImpl());
-		endpoint.publish("/location");
+		endpoint.publish("/location"); // 服务发布地址
 		return endpoint;
 	}
 }

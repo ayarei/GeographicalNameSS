@@ -1,7 +1,10 @@
 package com.ltr.location.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,12 +17,12 @@ import com.ltr.location.service.PlacesService;
 public class PlacesController {
 
 	@Autowired
-	PlacesService placesService;
+	private PlacesService placesService;
 
 	/**
 	 * 返回省份下所有城市
 	 * 
-	 * 模糊查询：四川->四川省
+	 * 允许模糊查询：江苏 -> 江苏省
 	 * 
 	 * @param provinceName
 	 * @return
@@ -60,8 +63,17 @@ public class PlacesController {
 		return placesService.findByLngAndLat(longitude, latitude);
 	}
 
+	
 	@RequestMapping(value = "/",produces = "application/html;charset=utf-8")
-	public String index() {
-		return "index.html";
+	public String index(HttpSession session, Model model) {
+		Object login = session.getAttribute("isLogin");
+		if(login == null) {
+			model.addAttribute("login","未登录");
+			return "index.html";
+		}else {
+			model.addAttribute("login", "已登录");
+			return "index.html";
+		}
+		
 	}
 }
