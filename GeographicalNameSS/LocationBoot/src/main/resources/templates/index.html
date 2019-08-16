@@ -3,10 +3,13 @@
 <head>
 <meta charset="utf-8">
 <title>接口说明</title>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<h4>Author By LTR</h4>
 	<h5><span th:text="${login}"></span></h5>
+	<h4>注册登录： /register</h4>
 	<h3>Rest接口</h3>
 	<table>
 		<tr>
@@ -29,7 +32,7 @@
 			<td>根据经纬度查询最近匹配区县</td>
 		</tr>
 		<tr>
-			<td>(GET)/nearby?lng={longitude}&lat={latitude}</td>
+			<td>(GET)/province/nearby?lng={longitude}&lat={latitude}</td>
 		</tr>
 		<tr height="15" />
 	</table>

@@ -5,6 +5,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class MailSendServiceImpl implements MailService {
 	 * @throws MessagingException 
 	 */
 	@Override
-	public void sendMail(String sendTo, String subject, String code) throws MessagingException {
+	public void sendMail(String sendTo, String subject, String code) throws MessagingException,MailSendException {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		Context context = new Context();

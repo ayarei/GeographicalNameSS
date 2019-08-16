@@ -4,6 +4,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.ltr.location.globalconst.GlobalConst;
 import com.ltr.location.service.MailService;
 
-// TODO 添加拦截器
+
+/**
+ * 
+ * @author LTR
+ *
+ */
 @Controller
 public class LoginController {
 
@@ -30,23 +36,23 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseBody
 	public String login(
 			@RequestParam("logincode") String code, 
-			@RequestParam("mailaddress") String mailAddress,
+			//@RequestParam("mailaddress") String mailAddress,
 			Model model, 
 			HttpSession session) {
 
-		String saveMailAddress = (String) session.getAttribute("mailAddress");
-		String saveCode = (String) session.getAttribute("code");
+		String saveMailAddress = (String) session.getAttribute(GlobalConst.USER_SESSION_LOGIN_MAILADDRESS_KEY);
+		String saveCode = (String) session.getAttribute(GlobalConst.USER_SESSION_LOGIN_CODE_KEY);
 
-		// 当验证码或者邮箱错误时，返回重新登录
-		if (!mailAddress.equalsIgnoreCase(saveMailAddress) || !code.equalsIgnoreCase(saveCode)) {
-			model.addAttribute("msg", "验证码或邮箱错误");
-			return "redirect:templates/login.html";
+		// 当验证码错误或者session中无绑定邮箱时，返回重新登录
+		if (saveMailAddress == null || !code.equalsIgnoreCase(saveCode)) {
+			return "loginFail";
 		}
 		// 用session保存登录状态
-		session.setAttribute("isLogin", mailAddress + "-" + code);
-		return "redirect:/";
+		session.setAttribute(GlobalConst.USER_SESSION_LOGIN_KEY, code);
+		return "loginSuccess";
 	}
 
 	/**
@@ -59,7 +65,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
-	public String reg(@RequestParam("mailaddress") String mailAddress, Model model, HttpSession session) {
+	public String register(@RequestParam("mailaddress") String mailAddress, Model model, HttpSession session) {
 		// 验证码邮件主题
 		String subject = "地名信息服务验证码";
 		// 生成六位验证码
@@ -67,8 +73,8 @@ public class LoginController {
 		String code = String.valueOf(num);
 		
 		// 将生成的验证码与用户邮箱在Session中绑定
-		session.setAttribute("mailAddress", mailAddress);
-		session.setAttribute("code", code);
+		session.setAttribute(GlobalConst.USER_SESSION_LOGIN_MAILADDRESS_KEY, mailAddress);
+		session.setAttribute(GlobalConst.USER_SESSION_LOGIN_CODE_KEY, code);
 		// 将验证码通过邮箱发送
 		try {
 			mailService.sendMail(mailAddress, subject, code);
@@ -77,7 +83,20 @@ public class LoginController {
 		} catch (MessagingException e) {
 			model.addAttribute("msg", "邮件发送错误");
 			return "fail";
+		} catch(MailSendException e){
+			model.addAttribute("msg", "邮件发送错误");
+			return "fail";
 		}
-
 	}
+	
+	@RequestMapping(value = "/register",method = RequestMethod.GET)
+	public String registerPage() {
+		return "mail/register";
+	}
+	
+	@RequestMapping(value = "/login",method = RequestMethod.GET)
+	public String loginPage() {
+		return "mail/login";
+	}
+	
 }

@@ -11,8 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ltr.location.globalconst.GlobalConst;
 import com.ltr.location.service.PlacesService;
 
+/**
+ * 
+ * @author LTR
+ *
+ */
 @Controller
 public class PlacesController {
 
@@ -56,7 +62,7 @@ public class PlacesController {
 	 * @param latitude  目标纬度
 	 * @return
 	 */
-	@RequestMapping(value = "/nearby", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+	@RequestMapping(value = "/province/nearby", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String findNearByCounty(@RequestParam(value = "lng", required = true) Double longitude,
 			@RequestParam(value = "lat", required = true) Double latitude) {
@@ -68,10 +74,10 @@ public class PlacesController {
 	public String index(HttpSession session, Model model) {
 		Object login = session.getAttribute("isLogin");
 		if(login == null) {
-			model.addAttribute("login","未登录");
+			model.addAttribute("login",GlobalConst.NOT_LOGIN_MESSAGE);
 			return "index.html";
 		}else {
-			model.addAttribute("login", "已登录");
+			model.addAttribute("login", GlobalConst.LOGIN_MESSAGE);
 			return "index.html";
 		}
 		

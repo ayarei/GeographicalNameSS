@@ -2,6 +2,8 @@ package com.ltr.location.service;
 
 import javax.mail.MessagingException;
 
+import org.springframework.mail.MailSendException;
+
 public interface MailService {
 	
 	/**
@@ -11,5 +13,5 @@ public interface MailService {
 	 * @param content  邮件内容
 	 * @throws MessagingException 
 	 */
-	 void sendMail(String sendTo, String subject, String content) throws MessagingException;
+	 void sendMail(String sendTo, String subject, String content) throws MessagingException,MailSendException;
 }
