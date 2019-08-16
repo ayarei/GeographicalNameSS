@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>注册</title>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("button").click(
+		function(){
+		$.post("/login",{
+			logincode:$("#code").val()
+		},
+		function(data){
+			if(data == 'loginFail'){
+				alert("登录失败，邮箱或验证码错误！");
+			}
+			else if(data == 'loginSuccess'){
+				window.location.href="/";
+			}
+		});
+	});
+});
+</script>
+</head>
+<style>
+div{
+	text-align: center;
+}
+</style>
+<body>
+<div class="container">
+	验证码：<br>
+	<input id="code" type="text" oninput = "value=value.replace(/[^\d]/g,'')" name="mailaddress" size = 20 placeholder="收到的验证码" required><br><br>
+	<button type="button" class="btn btn-primary">登录服务</button>
+</div>
+</body>
+</html>

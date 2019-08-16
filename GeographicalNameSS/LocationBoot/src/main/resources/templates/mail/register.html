@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>注册</title>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+// TODO 前台增加对邮箱格式的判断
+$(document).ready(function(){
+	$("button").click(function(){
+		// 邮件发送按钮只能点一次
+		$(this).attr("disabled","true");
+		$.post("/register",{
+			mailaddress:$("#mail").val()
+		},
+		function(data){
+			//alert("邮件发送状态" + data);
+			if(data == 'fail'){
+				alert("邮件发送状态" + data);
+			}
+			else if(data == 'success'){
+				window.location.href = "/login";
+			}
+		});
+	});
+});
+</script>
+</head>
+<style>
+div{
+	text-align: center;
+}
+</style>
+<body>
+<div class="container">
+	邮箱：<br>
+	<input id="mail" type="email" name="mailaddress" size = 20 placeholder="你的邮箱" required><br><br>
+	<button type="button" class="btn btn-primary">注册</button>
+</div>
+</body>
+</html>
