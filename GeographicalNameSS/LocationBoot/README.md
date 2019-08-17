@@ -9,3 +9,6 @@
 - 9091：Actuator监控端口
 - 9000：SpringBootAdmin监控端口
 
+## 邮件登录验证服务
+1. 在properties中添加邮箱地址
+2. 打开邮箱的smtp服务

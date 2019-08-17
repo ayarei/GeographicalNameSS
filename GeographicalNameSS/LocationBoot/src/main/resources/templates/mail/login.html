@@ -9,17 +9,22 @@
 $(document).ready(function(){
 	$("button").click(
 		function(){
-		$.post("/login",{
-			logincode:$("#code").val()
-		},
-		function(data){
-			if(data == 'loginFail'){
-				alert("登录失败，邮箱或验证码错误！");
+			if($("#code").val().length < 6){
+				alert("验证码无效！");
 			}
-			else if(data == 'loginSuccess'){
-				window.location.href="/";
+			else{
+				$.post("/login",{
+					logincode:$("#code").val()
+				},
+				function(data){
+					if(data == 'loginFail'){
+						alert("登录失败，邮箱或验证码错误！");
+					}
+					else if(data == 'loginSuccess'){
+						window.location.href="/";
+					}
+				});
 			}
-		});
 	});
 });
 </script>

@@ -9,20 +9,23 @@
 // TODO 前台增加对邮箱格式的判断
 $(document).ready(function(){
 	$("button").click(function(){
-		// 邮件发送按钮只能点一次
-		$(this).attr("disabled","true");
-		$.post("/register",{
-			mailaddress:$("#mail").val()
-		},
-		function(data){
-			//alert("邮件发送状态" + data);
-			if(data == 'fail'){
-				alert("邮件发送状态" + data);
-			}
-			else if(data == 'success'){
-				window.location.href = "/login";
-			}
-		});
+		if($("#mail").val() == ""){
+			alert("请填写邮箱地址");
+		}else{
+			// 邮件发送按钮只能点一次
+			$(this).attr("disabled","true");
+			$.post("/register",{
+				mailaddress:$("#mail").val()
+			},
+			function(data){
+				if(data == 'fail'){
+					alert("邮件发送状态" + data);
+				}
+				else if(data == 'success'){
+					window.location.href = "/login";
+				}
+			});	
+		}
 	});
 });
 </script>
@@ -35,7 +38,7 @@ div{
 <body>
 <div class="container">
 	邮箱：<br>
-	<input id="mail" type="email" name="mailaddress" size = 20 placeholder="你的邮箱" required><br><br>
+	<input id="mail" type="email" name="mailaddress" size = 20 placeholder="你的邮箱"><br><br>
 	<button type="button" class="btn btn-primary">注册</button>
 </div>
 </body>

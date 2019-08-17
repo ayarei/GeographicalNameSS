@@ -39,7 +39,6 @@ public class LoginController {
 	@ResponseBody
 	public String login(
 			@RequestParam("logincode") String code, 
-			//@RequestParam("mailaddress") String mailAddress,
 			Model model, 
 			HttpSession session) {
 
