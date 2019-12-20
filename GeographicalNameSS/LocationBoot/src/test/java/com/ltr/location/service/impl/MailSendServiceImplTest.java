@@ -1,7 +1,5 @@
 package com.ltr.location.service.impl;
 
-import static org.junit.Assert.*;
-
 import javax.mail.MessagingException;
 
 import org.junit.Test;

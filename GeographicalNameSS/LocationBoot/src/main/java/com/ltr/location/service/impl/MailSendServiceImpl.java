@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.ltr.location.globalconst.GlobalConst;
 import com.ltr.location.service.MailService;
 
 @Service
@@ -34,7 +35,7 @@ public class MailSendServiceImpl implements MailService {
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		Context context = new Context();
-		context.setVariable("code", code);
+		context.setVariable(GlobalConst.USER_SESSION_LOGIN_CODE_KEY, code);
 		String emailContent = templateEngine.process("mailcode", context);
 		helper.setFrom(sendFrom);
 		helper.setTo(sendTo);

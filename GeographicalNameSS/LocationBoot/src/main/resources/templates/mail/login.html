@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>注册</title>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -36,7 +37,7 @@ div{
 </style>
 <body>
 <div class="container">
-	验证码：<br>
+	<br>验证码：<br>
 	<input id="code" type="text" oninput = "value=value.replace(/[^\d]/g,'')" name="mailaddress" size = 20 placeholder="收到的验证码" required><br><br>
 	<button type="button" class="btn btn-primary">登录服务</button>
 </div>

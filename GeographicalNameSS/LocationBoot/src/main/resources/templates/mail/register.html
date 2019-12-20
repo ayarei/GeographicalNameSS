@@ -3,22 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <title>注册</title>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 // TODO 前台增加对邮箱格式的判断
 $(document).ready(function(){
-	$("button").click(function(){
+	$("#reg_bt").click(function(){
 		if($("#mail").val() == ""){
 			alert("请填写邮箱地址");
 		}else{
 			// 邮件发送按钮只能点一次
-			$(this).attr("disabled","true");
+			$("#reg_bt").attr("disabled","true");
 			$.post("/register",{
 				mailaddress:$("#mail").val()
 			},
 			function(data){
 				if(data == 'fail'){
+					$("#reg_bt").removeAttr("disabled");
 					alert("邮件发送状态" + data);
 				}
 				else if(data == 'success'){
@@ -37,9 +39,9 @@ div{
 </style>
 <body>
 <div class="container">
-	邮箱：<br>
+	<br>邮箱：<br>
 	<input id="mail" type="email" name="mailaddress" size = 20 placeholder="你的邮箱"><br><br>
-	<button type="button" class="btn btn-primary">注册</button>
+	<button id="reg_bt" type="button" class="btn btn-primary">注册</button>
 </div>
 </body>
 </html>

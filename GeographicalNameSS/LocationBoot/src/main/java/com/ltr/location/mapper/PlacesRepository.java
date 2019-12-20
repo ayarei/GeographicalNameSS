@@ -20,7 +20,7 @@ public interface PlacesRepository extends JpaRepository<Places, Integer> {
 	/**
 	 * 根据省名查找地市名
 	 * 
-	 * @param provinceName
+	 * @param provinceName  省名
 	 * @return
 	 */
 	@Query(value = "select city from Places where Province Like %?1% group by city", nativeQuery = true)
